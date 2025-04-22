@@ -1,14 +1,35 @@
-import connectDB, { connectMongodb } from "../lib/mongodb";
-import exam from "../models/exam";
+"use client";
+import { useEffect, useState } from "react";
 
-export const dynamic = "force-dynamic"; // ডাটা ফ্রেশ রাখতে
+export default function Exams() {
+  const [exams, setExams] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-export default async function Exams() {
-  await connectMongodb();
-  const exams = await exam.find();
+  useEffect(() => {
+    const fetchExams = async () => {
+      try {
+        // Fetch data from your API route or database directly
+        const response = await fetch(
+          `${process.env.NEXT_PUBLIC_BASE_URL}/api/exams`
+        );
+        const data = await response.json();
+        setExams(data);
+      } catch (err) {
+        setError("Failed to load exams.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchExams();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
 
   return (
-    <div className="px-4 py-8 sm:px-6 lg:px-12 max-w-7xl mx-auto ">
+    <div className="px-4 py-8 sm:px-6 lg:px-12 max-w-7xl mx-auto">
       <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-center text-blue-700">
         📚 সব পরীক্ষা
       </h1>

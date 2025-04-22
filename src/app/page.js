@@ -1,4 +1,3 @@
-import Image from "next/image";
 import Exams from "./component/Exams";
 
 export default function Home() {

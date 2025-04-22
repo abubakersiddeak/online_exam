@@ -37,3 +37,12 @@ export async function POST(request) {
     );
   }
 }
+
+export async function GET() {
+  await connectMongodb();
+  const exams = await exam.find();
+
+  return new Response(JSON.stringify(exams), {
+    headers: { "Content-Type": "application/json" },
+  });
+}

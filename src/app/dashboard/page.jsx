@@ -54,7 +54,7 @@ export default function PostExamForm() {
     setMessage("⏳ Submitting...");
 
     try {
-      const res = await fetch("/api/exams", {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/api/exams`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

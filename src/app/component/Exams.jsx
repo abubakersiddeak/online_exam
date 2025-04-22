@@ -1,10 +1,12 @@
 "use client";
 import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Exams() {
   const [exams, setExams] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
     const fetchExams = async () => {
@@ -25,8 +27,17 @@ export default function Exams() {
     fetchExams();
   }, []);
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="text-center font-bold text-4xl mt-5">Loading...</div>
+    );
   if (error) return <div>{error}</div>;
+
+  const handleExamCardClick = (e, exam) => {
+    e.preventDefault();
+    console.log(exam._id);
+    router.push(`/testque/${exam._id}`);
+  };
 
   return (
     <div className="px-4 py-8 sm:px-6 lg:px-12 max-w-7xl mx-auto">
@@ -36,9 +47,12 @@ export default function Exams() {
 
       <div className="flex flex-wrap justify-center gap-6">
         {exams.map((exam) => (
-          <div
+          <button
             key={exam._id}
-            className="w-full sm:w-[300px] md:w-[300px] lg:w-[300px] xl:w-[350px] rounded-2xl bg-white shadow-md hover:shadow-xl transition-shadow duration-300 p-5 border border-gray-100 hover:border-blue-300 transform hover:scale-105"
+            className="w-full sm:w-[300px] md:w-[300px] lg:w-[300px] xl:w-[350px] rounded-2xl bg-white shadow-md hover:shadow-xl transition-shadow duration-300 p-5 border border-gray-100 hover:border-blue-300 transform hover:scale-105 text-start"
+            onClick={(e) => {
+              handleExamCardClick(e, exam);
+            }}
           >
             <h2 className="text-lg sm:text-xl font-semibold text-gray-800 mb-2">
               {exam.title}
@@ -50,7 +64,7 @@ export default function Exams() {
               <span>⏱️ সময়: {exam.duration} মিনিট</span>
               <span className="ml-2 text-xs text-gray-400">📅 {exam.date}</span>
             </div>
-          </div>
+          </button>
         ))}
       </div>
     </div>

@@ -101,7 +101,7 @@ const Page = () => {
     exam.questions.forEach((q, index) => {
       const selectedOptionId = answers[index];
       const correctOption = q.options.find((opt) => opt.isCorrect);
-      calculatedResults[index] = selectedOptionId === correctOption?._id?.$oid;
+      calculatedResults[index] = selectedOptionId === correctOption?._id;
     });
 
     setResults(calculatedResults);

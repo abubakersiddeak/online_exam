@@ -28,9 +28,7 @@ export default function Exams() {
   }, []);
 
   if (loading)
-    return (
-      <div className="text-center font-bold text-4xl mt-5">Loading...</div>
-    );
+    return <div className="text-center font-bold text-4xl ">Loading...</div>;
   if (error) return <div>{error}</div>;
 
   const handleExamCardClick = (e, exam) => {

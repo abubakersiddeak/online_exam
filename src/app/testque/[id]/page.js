@@ -87,6 +87,11 @@ const Page = () => {
 
     return () => clearInterval(countdown);
   }, [start, submitted, timeLeft]);
+  useEffect(() => {
+    if (submitted && Object.keys(results).length > 0) {
+      handleSubmitStudent();
+    }
+  }, [results, submitted]);
 
   const formatTime = (seconds) => {
     const m = Math.floor(seconds / 60);
@@ -106,6 +111,7 @@ const Page = () => {
     [submitted]
   );
 
+  // সাবমিট করার ফাংশন
   const handleSubmit = useCallback(() => {
     if (!exam || !exam.questions || submitted) return;
 
@@ -118,7 +124,6 @@ const Page = () => {
 
     setResults(calculatedResults);
     setSubmitted(true);
-    handleSubmitStudent();
   }, [exam, answers, submitted]);
 
   const handleStartClick = () => setStart(true);
@@ -146,6 +151,8 @@ const Page = () => {
       </div>
     );
   }
+
+  console.log(Object.values(results).filter((v) => v === true).length);
 
   return (
     <div className="container mx-auto p-6">

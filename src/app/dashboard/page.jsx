@@ -86,106 +86,117 @@ export default function PostExamForm() {
   };
 
   return (
-    <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg space-y-6">
-      <h2 className="text-3xl font-semibold mb-6 text-center text-blue-600">
-        📋 Create New Exam
-      </h2>
-      <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
-        <div>
-          <input
-            type="text"
-            name="title"
-            placeholder="Exam Title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-          />
-        </div>
+    <div className="flex">
+      <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg space-y-6">
+        <h2 className="text-3xl font-semibold mb-6 text-center text-blue-600">
+          📋 Create New Exam
+        </h2>
+        <form ref={formRef} onSubmit={handleSubmit} className="space-y-6">
+          <div>
+            <input
+              type="text"
+              name="title"
+              placeholder="Exam Title"
+              value={formData.title}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            />
+          </div>
 
-        <div>
-          <textarea
-            name="description"
-            placeholder="Description"
-            value={formData.description}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-          />
-        </div>
+          <div>
+            <textarea
+              name="description"
+              placeholder="Description"
+              value={formData.description}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            />
+          </div>
 
-        <div>
-          <input
-            type="number"
-            name="duration"
-            placeholder="Duration (minutes)"
-            value={formData.duration}
-            onChange={handleChange}
-            required
-            className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-          />
-        </div>
+          <div>
+            <input
+              type="number"
+              name="duration"
+              placeholder="Duration (minutes)"
+              value={formData.duration}
+              onChange={handleChange}
+              required
+              className="w-full px-4 py-3 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+            />
+          </div>
 
-        {/* Dynamic Questions */}
-        <div>
-          <h3 className="text-xl font-semibold mb-4 text-blue-600">
-            Add Questions
-          </h3>
-          {formData.questions.map((question, index) => (
-            <div key={index} className="mb-6 p-6 bg-gray-100 rounded-md border">
-              <input
-                type="text"
-                name="questionText"
-                placeholder="Question text"
-                value={question.questionText}
-                onChange={(e) => handleQuestionChange(index, e)}
-                required
-                className="w-full px-4 py-3 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-              />
+          {/* Dynamic Questions */}
+          <div>
+            <h3 className="text-xl font-semibold mb-4 text-blue-600">
+              Add Questions
+            </h3>
+            {formData.questions.map((question, index) => (
+              <div
+                key={index}
+                className="mb-6 p-6 bg-gray-100 rounded-md border"
+              >
+                <input
+                  type="text"
+                  name="questionText"
+                  placeholder="Question text"
+                  value={question.questionText}
+                  onChange={(e) => handleQuestionChange(index, e)}
+                  required
+                  className="w-full px-4 py-3 border rounded-md mb-4 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                />
 
-              {/* Options */}
-              {question.options.map((option, optionIndex) => (
-                <div key={optionIndex} className="flex items-center mb-4">
-                  <input
-                    type="text"
-                    name="optionText"
-                    placeholder={`Option ${optionIndex + 1}`}
-                    value={option.optionText}
-                    onChange={(e) => handleOptionChange(index, optionIndex, e)}
-                    required
-                    className="w-full px-4 py-3 border rounded-md mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                  />
-                  <input
-                    type="checkbox"
-                    name="isCorrect"
-                    checked={option.isCorrect}
-                    onChange={(e) => handleOptionChange(index, optionIndex, e)}
-                    className="h-6 w-6"
-                  />
-                  <span className="ml-2 text-gray-600">Correct Answer</span>
-                </div>
-              ))}
-            </div>
-          ))}
+                {/* Options */}
+                {question.options.map((option, optionIndex) => (
+                  <div key={optionIndex} className="flex items-center mb-4">
+                    <input
+                      type="text"
+                      name="optionText"
+                      placeholder={`Option ${optionIndex + 1}`}
+                      value={option.optionText}
+                      onChange={(e) =>
+                        handleOptionChange(index, optionIndex, e)
+                      }
+                      required
+                      className="w-full px-4 py-3 border rounded-md mr-2 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    />
+                    <input
+                      type="checkbox"
+                      name="isCorrect"
+                      checked={option.isCorrect}
+                      onChange={(e) =>
+                        handleOptionChange(index, optionIndex, e)
+                      }
+                      className="h-6 w-6"
+                    />
+                    <span className="ml-2 text-gray-600">Correct Answer</span>
+                  </div>
+                ))}
+              </div>
+            ))}
+
+            <button
+              type="button"
+              onClick={handleAddQuestion}
+              className="text-blue-600 hover:underline mt-4 block"
+            >
+              ➕ Add Another Question
+            </button>
+          </div>
 
           <button
-            type="button"
-            onClick={handleAddQuestion}
-            className="text-blue-600 hover:underline mt-4 block"
+            type="submit"
+            className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition"
           >
-            ➕ Add Another Question
+            ✅ Save Exam
           </button>
-        </div>
 
-        <button
-          type="submit"
-          className="w-full bg-blue-600 text-white py-3 rounded-md hover:bg-blue-700 transition"
-        >
-          ✅ Save Exam
-        </button>
-
-        {message && <p className="mt-4 text-center text-gray-600">{message}</p>}
-      </form>
+          {message && (
+            <p className="mt-4 text-center text-gray-600">{message}</p>
+          )}
+        </form>
+      </div>
     </div>
   );
 }

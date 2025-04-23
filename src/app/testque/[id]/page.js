@@ -163,6 +163,18 @@ const Page = () => {
         )}
 
         <div className={`${start ? "block" : "hidden"} mt-6`}>
+          <input
+            type="text"
+            className="border block p-2 m-3 rounded-xl"
+            placeholder="Your Name..."
+            required={true}
+          />
+          <input
+            type="number"
+            className="border block p-2 m-3 rounded-xl"
+            placeholder="Phone Number..."
+            required={true}
+          />
           {exam.questions.map((q, index) => (
             <div
               key={index}
@@ -171,6 +183,7 @@ const Page = () => {
               <h2 className="font-semibold text-lg text-gray-800 mb-3">
                 প্রশ্ন {index + 1}: {q.questionText}
               </h2>
+
               <div className="space-y-3">
                 {q.options.map((opt) => {
                   const optionId = opt._id;
@@ -230,9 +243,10 @@ const Page = () => {
 
         {submitted && (
           <div className="mt-8 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md text-center font-semibold">
-            ✅ আপনার উত্তরগুলো জমা হয়েছে! আপনি{" "}
-            {Object.values(results).filter((v) => v === true).length} টি
-            প্রশ্নের মধ্যে {exam.questions.length} টির সঠিক উত্তর দিয়েছেন।
+            ✅ আপনার উত্তরগুলো জমা হয়েছে! আপনি {exam.questions.length} টি
+            প্রশ্নের মধ্যে{" "}
+            {Object.values(results).filter((v) => v === true).length} টির সঠিক
+            উত্তর দিয়েছেন।
           </div>
         )}
       </div>

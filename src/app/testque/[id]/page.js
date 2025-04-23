@@ -159,7 +159,7 @@ const Page = () => {
   }
 
   console.log(Object.values(results).filter((v) => v === true).length);
-
+  console.log(exam._id);
   return (
     <div className="container mx-auto p-6">
       <div className="bg-white shadow-md rounded-lg p-8">

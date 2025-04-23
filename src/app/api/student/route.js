@@ -8,7 +8,7 @@ export async function POST(request) {
 
   try {
     const body = await request.json();
-    const { name, phoneNumber, result } = body;
+    const { name, phoneNumber, result, examId, total } = body;
 
     if (!name || !phoneNumber || typeof result !== "number") {
       return NextResponse.json(
@@ -17,7 +17,13 @@ export async function POST(request) {
       );
     }
 
-    const newStudent = new Student({ name, phoneNumber, result });
+    const newStudent = new Student({
+      name,
+      phoneNumber,
+      result,
+      examId,
+      total,
+    });
     await newStudent.save();
 
     return NextResponse.json(

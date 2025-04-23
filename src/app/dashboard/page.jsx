@@ -1,5 +1,6 @@
 "use client";
 import { useState, useRef } from "react";
+import ExamResult from "../component/ExamResult";
 
 export default function PostExamForm() {
   const formRef = useRef(null);
@@ -86,7 +87,8 @@ export default function PostExamForm() {
   };
 
   return (
-    <div className="flex">
+    <div className="flex flex-col">
+      {/* create exam */}
       <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg space-y-6">
         <h2 className="text-3xl font-semibold mb-6 text-center text-blue-600">
           📋 Create New Exam
@@ -197,6 +199,8 @@ export default function PostExamForm() {
           )}
         </form>
       </div>
+      {/* create exam end */}
+      <ExamResult />
     </div>
   );
 }

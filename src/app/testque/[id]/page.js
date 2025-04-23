@@ -115,6 +115,12 @@ const Page = () => {
   const handleSubmit = useCallback(() => {
     if (!exam || !exam.questions || submitted) return;
 
+    // চেক করুন নাম এবং মোবাইল নাম্বার ফাঁকা কি না
+    if (!formData.name.trim() || !formData.phoneNumber.trim()) {
+      alert("দয়া করে আপনার নাম এবং মোবাইল নাম্বার দিন।");
+      return;
+    }
+
     const calculatedResults = {};
     exam.questions.forEach((q, index) => {
       const selectedOptionId = answers[index];
@@ -124,7 +130,7 @@ const Page = () => {
 
     setResults(calculatedResults);
     setSubmitted(true);
-  }, [exam, answers, submitted]);
+  }, [exam, answers, submitted, formData]);
 
   const handleStartClick = () => setStart(true);
 
@@ -184,7 +190,7 @@ const Page = () => {
             <div className="mt-6">
               <input
                 type="text"
-                className="border block p-2 m-3 rounded-xl w-full"
+                className="border block p-2 my-1.5 rounded-xl w-full"
                 placeholder="আপনার নাম"
                 required
                 value={formData.name}
@@ -194,7 +200,7 @@ const Page = () => {
               />
               <input
                 type="number"
-                className="border block p-2 m-3 rounded-xl w-full"
+                className="border block p-2 my-1.5 rounded-xl w-full"
                 placeholder="মোবাইল নাম্বার"
                 required
                 value={formData.phoneNumber}

@@ -5,7 +5,7 @@ import { useEffect, useState, useCallback } from "react";
 
 const Page = () => {
   const params = useParams();
-  const id = params.id;
+  const id = Array.isArray(params?.id) ? params?.id[0] : params?.id;
 
   const [exam, setExam] = useState(null);
   const [answers, setAnswers] = useState({});
@@ -15,8 +15,37 @@ const Page = () => {
   const [timeLeft, setTimeLeft] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [formData, setFormData] = useState({
+    name: "",
+    phoneNumber: "",
+  });
 
-  // Fetch exam data
+  const handleSubmitStudent = async () => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/student`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            name: formData.name,
+            phoneNumber: formData.phoneNumber,
+            result: Object.values(results).filter((v) => v === true).length,
+            total: exam?.questions?.length || 0,
+            examId: exam?._id,
+          }),
+        }
+      );
+
+      const studentdata = await res.json();
+      console.log("✅ Student submitted:", studentdata);
+    } catch (error) {
+      console.error("❌ Error submitting student:", error);
+    }
+  };
+
   useEffect(() => {
     const fetchExam = async () => {
       setLoading(true);
@@ -26,18 +55,15 @@ const Page = () => {
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/exams/${id}`
         );
         if (!res.ok) {
-          throw new Error(
-            `HTTP error! status: ${res.status} - ${res.statusText}`
-          );
+          throw new Error(`HTTP error! status: ${res.status}`);
         }
         const data = await res.json();
         setExam(data);
         if (data?.duration) {
-          setTimeLeft(data.duration * 60); // Exam time in seconds
+          setTimeLeft(data.duration * 60);
         }
       } catch (e) {
         setError("পরীক্ষার তথ্য লোড করতে সমস্যা হয়েছে।");
-        console.error("Error fetching exam:", e);
       } finally {
         setLoading(false);
       }
@@ -46,19 +72,12 @@ const Page = () => {
     if (id) fetchExam();
   }, [id]);
 
-  // Timer logic
+  // Auto-submit after time runs out
   useEffect(() => {
-    let timer;
-    if (start && !submitted && timeLeft > 0) {
-      timer = setTimeout(() => {
-        handleSubmit();
-      }, timeLeft * 1000);
+    if (start && !submitted && timeLeft === 0) {
+      handleSubmit();
     }
 
-    return () => clearTimeout(timer);
-  }, [start, submitted, timeLeft]);
-
-  useEffect(() => {
     let countdown;
     if (start && !submitted && timeLeft > 0) {
       countdown = setInterval(() => {
@@ -66,21 +85,15 @@ const Page = () => {
       }, 1000);
     }
 
-    if (timeLeft === 0 && !submitted && start) {
-      handleSubmit();
-    }
-
     return () => clearInterval(countdown);
   }, [start, submitted, timeLeft]);
 
-  // Helper function to format time
   const formatTime = (seconds) => {
-    const minutes = Math.floor(seconds / 60);
-    const remainingSeconds = seconds % 60;
-    return `${minutes}:${remainingSeconds < 10 ? "0" : ""}${remainingSeconds}`;
+    const m = Math.floor(seconds / 60);
+    const s = seconds % 60;
+    return `${m}:${s < 10 ? "0" : ""}${s}`;
   };
 
-  // Handle option selection
   const handleOptionChange = useCallback(
     (questionIndex, optionId) => {
       if (!submitted) {
@@ -93,7 +106,6 @@ const Page = () => {
     [submitted]
   );
 
-  // Handle exam submission
   const handleSubmit = useCallback(() => {
     if (!exam || !exam.questions || submitted) return;
 
@@ -106,12 +118,10 @@ const Page = () => {
 
     setResults(calculatedResults);
     setSubmitted(true);
+    handleSubmitStudent();
   }, [exam, answers, submitted]);
 
-  // Handle start exam
-  const handleStartClick = () => {
-    setStart(true);
-  };
+  const handleStartClick = () => setStart(true);
 
   if (loading) {
     return (
@@ -148,7 +158,7 @@ const Page = () => {
         {!start && (
           <div className="flex justify-center">
             <button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 ease-in-out focus:outline-none focus:shadow-outline"
+              className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full"
               onClick={handleStartClick}
             >
               পরীক্ষা শুরু করুন
@@ -162,79 +172,91 @@ const Page = () => {
           </div>
         )}
 
-        <div className={`${start ? "block" : "hidden"} mt-6`}>
-          <input
-            type="text"
-            className="border block p-2 m-3 rounded-xl"
-            placeholder="Your Name..."
-            required={true}
-          />
-          <input
-            type="number"
-            className="border block p-2 m-3 rounded-xl"
-            placeholder="Phone Number..."
-            required={true}
-          />
-          {exam.questions.map((q, index) => (
-            <div
-              key={index}
-              className="mb-8 p-6 border border-gray-200 rounded-lg shadow-sm bg-gray-50"
-            >
-              <h2 className="font-semibold text-lg text-gray-800 mb-3">
-                প্রশ্ন {index + 1}: {q.questionText}
-              </h2>
-
-              <div className="space-y-3">
-                {q.options.map((opt) => {
-                  const optionId = opt._id;
-                  const isCorrectAnswer =
-                    submitted &&
-                    results[index] === true &&
-                    answers[index] === optionId &&
-                    opt.isCorrect;
-                  const isWrongAnswer =
-                    submitted &&
-                    results[index] === false &&
-                    answers[index] === optionId &&
-                    !opt.isCorrect;
-                  const isCorrectOption = submitted && opt.isCorrect;
-
-                  return (
-                    <label
-                      key={optionId}
-                      className={`block cursor-pointer rounded py-2 px-3 ${
-                        isCorrectAnswer
-                          ? "bg-green-100 text-green-800 font-semibold"
-                          : isWrongAnswer
-                          ? "bg-red-100 text-red-800 font-semibold"
-                          : isCorrectOption
-                          ? "bg-green-50 text-green-800"
-                          : ""
-                      }`}
-                    >
-                      <input
-                        type="radio"
-                        name={`question-${index}`}
-                        value={optionId}
-                        checked={answers[index] === optionId}
-                        onChange={() => handleOptionChange(index, optionId)}
-                        className="mr-2 focus:ring-blue-500 h-4 w-4 text-blue-600 border-gray-300"
-                        disabled={submitted}
-                      />
-                      {opt.optionText}
-                    </label>
-                  );
-                })}
-              </div>
+        {start && (
+          <>
+            <div className="mt-6">
+              <input
+                type="text"
+                className="border block p-2 m-3 rounded-xl w-full"
+                placeholder="আপনার নাম"
+                required
+                value={formData.name}
+                onChange={(e) =>
+                  setFormData({ ...formData, name: e.target.value })
+                }
+              />
+              <input
+                type="number"
+                className="border block p-2 m-3 rounded-xl w-full"
+                placeholder="মোবাইল নাম্বার"
+                required
+                value={formData.phoneNumber}
+                onChange={(e) =>
+                  setFormData({ ...formData, phoneNumber: e.target.value })
+                }
+              />
             </div>
-          ))}
-        </div>
+
+            {exam.questions.map((q, index) => (
+              <div
+                key={index}
+                className="mb-8 p-6 border border-gray-200 rounded-lg bg-gray-50"
+              >
+                <h2 className="font-semibold text-lg text-gray-800 mb-3">
+                  প্রশ্ন {index + 1}: {q.questionText}
+                </h2>
+                <div className="space-y-2">
+                  {q.options.map((opt) => {
+                    const optionId = opt._id;
+                    const isCorrectAnswer =
+                      submitted &&
+                      results[index] === true &&
+                      answers[index] === optionId &&
+                      opt.isCorrect;
+                    const isWrongAnswer =
+                      submitted &&
+                      results[index] === false &&
+                      answers[index] === optionId &&
+                      !opt.isCorrect;
+                    const isCorrectOption = submitted && opt.isCorrect;
+
+                    return (
+                      <label
+                        key={optionId}
+                        className={`block cursor-pointer rounded py-2 px-3 ${
+                          isCorrectAnswer
+                            ? "bg-green-100 text-green-800 font-semibold"
+                            : isWrongAnswer
+                            ? "bg-red-100 text-red-800 font-semibold"
+                            : isCorrectOption
+                            ? "bg-green-50 text-green-800"
+                            : ""
+                        }`}
+                      >
+                        <input
+                          type="radio"
+                          name={`question-${index}`}
+                          value={optionId}
+                          checked={answers[index] === optionId}
+                          onChange={() => handleOptionChange(index, optionId)}
+                          className="mr-2"
+                          disabled={submitted}
+                        />
+                        {opt.optionText}
+                      </label>
+                    );
+                  })}
+                </div>
+              </div>
+            ))}
+          </>
+        )}
 
         {start && !submitted && (
           <div className="flex justify-center mt-8">
             <button
               onClick={handleSubmit}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full transition duration-300 ease-in-out focus:outline-none focus:shadow-outline"
+              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full"
             >
               সাবমিট করুন
             </button>

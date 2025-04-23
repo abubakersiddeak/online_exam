@@ -16,7 +16,13 @@ export default function Exams() {
           `${process.env.NEXT_PUBLIC_BASE_URL}/api/exams`
         );
         const data = await response.json();
-        setExams(data);
+
+        // Sort exams by creation date in descending order
+        const sortedExams = data.sort(
+          (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+        );
+
+        setExams(sortedExams);
       } catch (err) {
         setError("Failed to load exams.");
       } finally {

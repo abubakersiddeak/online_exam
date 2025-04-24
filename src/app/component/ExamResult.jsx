@@ -12,7 +12,7 @@ export default function ExamResult() {
   const [examId, setExamId] = useState("");
   const [exam, setExam] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedStudent, setSelectedStudent] = useState(null); // ✅ নতুন স্টেট
+  const [selectedStudent, setSelectedStudent] = useState(null); //  নতুন স্টেট
 
   useEffect(() => {
     const fetchData = async () => {
@@ -69,7 +69,7 @@ export default function ExamResult() {
   const showExamModal = (e, s) => {
     e.preventDefault();
     setExamId(s.examId);
-    setSelectedStudent(s); // ✅ শিক্ষার্থীর তথ্য রাখো
+    setSelectedStudent(s); //  শিক্ষার্থীর তথ্য রাখো
   };
 
   return (
@@ -140,7 +140,7 @@ export default function ExamResult() {
                       })}
                     </td>
                     <td className="py-2 px-3 border">
-                      {isWithin7Days(s.createdAt) ? "✅ হ্যাঁ" : "❌ না"}
+                      {isWithin7Days(s.createdAt) ? " হ্যাঁ" : " না"}
                     </td>
                   </tr>
                 ))}
@@ -169,27 +169,27 @@ export default function ExamResult() {
             >
               <h3 className="text-xl font-bold mb-4">📝 পরীক্ষার বিস্তারিত</h3>
               <p>
-                <strong>👤 শিক্ষার্থীর নাম:</strong> {selectedStudent.name}
+                <strong> শিক্ষার্থীর নাম:</strong> {selectedStudent.name}
               </p>
               <p>
                 <strong>📞 মোবাইল:</strong> {selectedStudent.phoneNumber}
               </p>
               <p>
-                <strong>🎯 পাপ্ত নম্বর :</strong> {selectedStudent.result}
+                <strong> পাপ্ত নম্বর :</strong> {selectedStudent.result}
               </p>
               <hr className="my-4" />
               <p>
-                <strong>📘 পরীক্ষার নাম:</strong> {exam.title}
+                <strong> পরীক্ষার নাম:</strong> {exam.title}
               </p>
               <p>
-                <strong>⏳ সময়সীমা:</strong> {exam.duration} মিনিট
+                <strong> সময়সীমা:</strong> {exam.duration} মিনিট
               </p>
 
               <button
                 onClick={() => setIsModalOpen(false)}
                 className="mt-6 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
               >
-                ✖️ বন্ধ করুন
+                বন্ধ করুন
               </button>
             </motion.div>
           </motion.div>

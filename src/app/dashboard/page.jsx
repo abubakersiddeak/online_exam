@@ -81,7 +81,7 @@ export default function PostExamForm() {
         setMessage(data.message || "Something went wrong");
       }
     } catch (err) {
-      setMessage("❌ Error submitting exam");
+      setMessage(" Error submitting exam");
       console.error(err);
     }
   };

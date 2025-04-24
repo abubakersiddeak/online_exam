@@ -44,9 +44,9 @@ export default function Exams() {
   };
 
   return (
-    <div className="px-4 py-8 sm:px-6 lg:px-12 max-w-7xl mx-auto">
+    <div className="px-4 py-8 sm:px-6 lg:px-12 max-w-7xl mx-auto mt-12 min-h-[90vh]">
       <h1 className="text-2xl sm:text-3xl font-bold mb-8 text-center text-blue-700">
-        📚 সব পরীক্ষা
+        বাছাইকৃত প্রশ্নের সাথে যাচাই করো নিজেকে
       </h1>
 
       <div className="flex flex-wrap justify-center gap-6">

@@ -1,7 +1,7 @@
 export const teacher = [
   {
     name: "Mithil Hasan",
-    description: " A good Teacher ",
+    description: " Our Science Teacher ",
     subject: "Bangla , Science",
     image: "/how-to-be-teacher-malaysia-feature.png",
   },

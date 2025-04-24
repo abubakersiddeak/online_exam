@@ -1,5 +1,7 @@
 "use client";
 
+import Footer from "@/app/component/Footer";
+import Navbar from "@/app/component/Navber";
 import { useParams } from "next/navigation";
 import { useEffect, useState, useCallback } from "react";
 
@@ -87,6 +89,7 @@ const Page = () => {
 
     return () => clearInterval(countdown);
   }, [start, submitted, timeLeft]);
+
   useEffect(() => {
     if (submitted && Object.keys(results).length > 0) {
       handleSubmitStudent();
@@ -111,11 +114,10 @@ const Page = () => {
     [submitted]
   );
 
-  // সাবমিট করার ফাংশন
+  // Handle Submit
   const handleSubmit = useCallback(() => {
     if (!exam || !exam.questions || submitted) return;
 
-    // চেক করুন নাম এবং মোবাইল নাম্বার ফাঁকা কি না
     if (!formData.name.trim() || !formData.phoneNumber.trim()) {
       alert("দয়া করে আপনার নাম এবং মোবাইল নাম্বার দিন।");
       return;
@@ -137,7 +139,9 @@ const Page = () => {
   if (loading) {
     return (
       <div className="flex justify-center items-center h-screen">
-        লোড হচ্ছে...
+        <span className="text-lg font-semibold text-gray-600">
+          লোড হচ্ছে...
+        </span>
       </div>
     );
   }
@@ -152,139 +156,140 @@ const Page = () => {
 
   if (!exam) {
     return (
-      <div className="flex justify-center items-center h-screen">
+      <div className="flex justify-center items-center h-screen text-lg font-semibold text-gray-700">
         পরীক্ষার তথ্য পাওয়া যায়নি।
       </div>
     );
   }
 
-  console.log(Object.values(results).filter((v) => v === true).length);
-  console.log(exam._id);
   return (
-    <div className="container mx-auto p-6">
-      <div className="bg-white shadow-md rounded-lg p-8">
-        <h1 className="text-3xl font-bold text-blue-700 mb-6 text-center">
-          {exam.title}
-        </h1>
-        <p className="text-gray-700 mb-4 text-center">{exam.description}</p>
+    <div>
+      <Navbar />
+      <div className="flex items-center justify-center min-h-screen bg-gradient-to-br from-orange-50 via-blue-50 to-purple-100 px-4 mt-9">
+        <div className="bg-white text-gray-800 p-6 sm:p-10 rounded-xl shadow-md max-w-3xl w-full mx-auto">
+          <h1 className="text-3xl sm:text-4xl font-bold text-indigo-600 text-center mb-4">
+            {exam.title}
+          </h1>
+          <p className="text-center text-gray-500 mb-6">{exam.description}</p>
 
-        {!start && (
-          <div className="flex justify-center">
-            <button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full"
-              onClick={handleStartClick}
-            >
-              পরীক্ষা শুরু করুন
-            </button>
-          </div>
-        )}
-
-        {start && !submitted && (
-          <div className="text-center text-red-600 font-bold text-xl my-6">
-            বাকি সময়: {formatTime(timeLeft)}
-          </div>
-        )}
-
-        {start && (
-          <>
-            <div className="mt-6">
-              <input
-                type="text"
-                className="border block p-2 my-1.5 rounded-xl w-full"
-                placeholder="আপনার নাম"
-                required
-                value={formData.name}
-                onChange={(e) =>
-                  setFormData({ ...formData, name: e.target.value })
-                }
-              />
-              <input
-                type="number"
-                className="border block p-2 my-1.5 rounded-xl w-full"
-                placeholder="মোবাইল নাম্বার"
-                required
-                value={formData.phoneNumber}
-                onChange={(e) =>
-                  setFormData({ ...formData, phoneNumber: e.target.value })
-                }
-              />
-            </div>
-
-            {exam.questions.map((q, index) => (
-              <div
-                key={index}
-                className="mb-8 p-6 border border-gray-200 rounded-lg bg-gray-50"
+          {!start && (
+            <div className="flex justify-center">
+              <button
+                onClick={handleStartClick}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-5 rounded-full transition"
               >
-                <h2 className="font-semibold text-lg text-gray-800 mb-3">
-                  প্রশ্ন {index + 1}: {q.questionText}
-                </h2>
-                <div className="space-y-2">
-                  {q.options.map((opt) => {
-                    const optionId = opt._id;
-                    const isCorrectAnswer =
-                      submitted &&
-                      results[index] === true &&
-                      answers[index] === optionId &&
-                      opt.isCorrect;
-                    const isWrongAnswer =
-                      submitted &&
-                      results[index] === false &&
-                      answers[index] === optionId &&
-                      !opt.isCorrect;
-                    const isCorrectOption = submitted && opt.isCorrect;
+                পরীক্ষা শুরু করুন
+              </button>
+            </div>
+          )}
 
-                    return (
-                      <label
-                        key={optionId}
-                        className={`block cursor-pointer rounded py-2 px-3 ${
-                          isCorrectAnswer
-                            ? "bg-green-100 text-green-800 font-semibold"
-                            : isWrongAnswer
-                            ? "bg-red-100 text-red-800 font-semibold"
-                            : isCorrectOption
-                            ? "bg-green-50 text-green-800"
-                            : ""
-                        }`}
-                      >
-                        <input
-                          type="radio"
-                          name={`question-${index}`}
-                          value={optionId}
-                          checked={answers[index] === optionId}
-                          onChange={() => handleOptionChange(index, optionId)}
-                          className="mr-2"
-                          disabled={submitted}
-                        />
-                        {opt.optionText}
-                      </label>
-                    );
-                  })}
-                </div>
+          {start && !submitted && (
+            <div className="text-center my-4 text-base text-pink-600 font-medium">
+              ⏰ বাকি সময়: {formatTime(timeLeft)}
+            </div>
+          )}
+
+          {start && (
+            <>
+              <div className="space-y-4 mb-8">
+                <input
+                  type="text"
+                  placeholder="আপনার নাম"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  value={formData.name}
+                  onChange={(e) =>
+                    setFormData({ ...formData, name: e.target.value })
+                  }
+                />
+                <input
+                  type="number"
+                  placeholder="মোবাইল নাম্বার"
+                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                  value={formData.phoneNumber}
+                  onChange={(e) =>
+                    setFormData({ ...formData, phoneNumber: e.target.value })
+                  }
+                />
               </div>
-            ))}
-          </>
-        )}
 
-        {start && !submitted && (
-          <div className="flex justify-center mt-8">
-            <button
-              onClick={handleSubmit}
-              className="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-full"
-            >
-              সাবমিট করুন
-            </button>
-          </div>
-        )}
+              {exam.questions.map((q, index) => (
+                <div
+                  key={index}
+                  className="mb-6 p-4 rounded-md border border-gray-200"
+                >
+                  <h2 className="text-base font-semibold mb-3 text-gray-700">
+                    প্রশ্ন {index + 1}: {q.questionText}
+                  </h2>
+                  <div className="space-y-2">
+                    {q.options.map((opt) => {
+                      const optionId = opt._id;
+                      const isCorrectAnswer =
+                        submitted &&
+                        results[index] === true &&
+                        answers[index] === optionId &&
+                        opt.isCorrect;
+                      const isWrongAnswer =
+                        submitted &&
+                        results[index] === false &&
+                        answers[index] === optionId &&
+                        !opt.isCorrect;
+                      const isCorrectOption = submitted && opt.isCorrect;
 
-        {submitted && (
-          <div className="mt-8 p-4 bg-green-100 border border-green-400 text-green-700 rounded-md text-center font-semibold">
-            ✅ আপনার উত্তরগুলো জমা হয়েছে! আপনি {exam.questions.length} টি
-            প্রশ্নের মধ্যে{" "}
-            {Object.values(results).filter((v) => v === true).length} টির সঠিক
-            উত্তর দিয়েছেন।
-          </div>
-        )}
+                      return (
+                        <label
+                          key={optionId}
+                          className={`block p-2 rounded-md cursor-pointer border ${
+                            isCorrectAnswer
+                              ? "bg-green-100 border-green-400"
+                              : isWrongAnswer
+                              ? "bg-red-100 border-red-400"
+                              : isCorrectOption
+                              ? "bg-green-50 border-green-300"
+                              : "hover:bg-gray-100 border-gray-300"
+                          }`}
+                        >
+                          <input
+                            type="radio"
+                            name={`question-${index}`}
+                            value={optionId}
+                            checked={answers[index] === optionId}
+                            onChange={() => handleOptionChange(index, optionId)}
+                            className="mr-2"
+                            disabled={submitted}
+                          />
+                          {opt.optionText}
+                        </label>
+                      );
+                    })}
+                  </div>
+                </div>
+              ))}
+            </>
+          )}
+
+          {start && !submitted && (
+            <div className="flex justify-center mt-6">
+              <button
+                onClick={handleSubmit}
+                className="bg-indigo-600 hover:bg-indigo-700 text-white font-medium py-2 px-6 rounded-full transition"
+              >
+                সাবমিট করুন
+              </button>
+            </div>
+          )}
+
+          {submitted && (
+            <div className="mt-6 text-center text-green-600 font-medium bg-green-50 border border-green-200 rounded-md p-4">
+              ✅ আপনার উত্তরগুলো জমা হয়েছে! আপনি {exam.questions.length} টি
+              প্রশ্নের মধ্যে{" "}
+              {Object.values(results).filter((v) => v === true).length} টির সঠিক
+              উত্তর দিয়েছেন।
+            </div>
+          )}
+        </div>
       </div>
+
+      <Footer />
     </div>
   );
 };

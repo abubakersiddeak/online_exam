@@ -81,7 +81,7 @@ export default function PostExamForm() {
         setMessage(data.message || "Something went wrong");
       }
     } catch (err) {
-      setMessage(" Error submitting exam");
+      setMessage("❌ Error submitting exam");
       console.error(err);
     }
   };
@@ -89,7 +89,7 @@ export default function PostExamForm() {
   return (
     <div className="flex flex-col">
       {/* create exam */}
-      <div className="max-w-4xl mx-auto mt-10 p-6 bg-white rounded-2xl shadow-lg space-y-6">
+      <div className="max-w-4xl mx-auto mt-10 p-6  rounded-2xl shadow-lg space-y-6">
         <h2 className="text-3xl font-semibold mb-6 text-center text-blue-600">
           📋 Create New Exam
         </h2>
@@ -135,10 +135,7 @@ export default function PostExamForm() {
               Add Questions
             </h3>
             {formData.questions.map((question, index) => (
-              <div
-                key={index}
-                className="mb-6 p-6 bg-gray-100 rounded-md border"
-              >
+              <div key={index} className="mb-6 p-6  rounded-md border">
                 <input
                   type="text"
                   name="questionText"

@@ -39,7 +39,6 @@ const AboutPage = () => {
           </p>
         </section>
         {/* শিক্ষক প্যানেল */}
-        import Image from "next/image";
         <section className="mb-10">
           <h2 className="text-xl sm:text-2xl font-semibold text-green-600 mb-5 text-center">
             আমাদের শিক্ষকবৃন্দ

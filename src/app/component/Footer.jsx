@@ -86,8 +86,8 @@ export default function Footer() {
         {/* Contact Info */}
         <div>
           <h3 className="text-lg font-semibold mb-4 text-gray-800">Contact</h3>
-          <p className="text-sm">📞 +880 1234-567890</p>
-          <p className="text-sm">📧 info@edunation.com</p>
+          <p className="text-sm">📞 +880 01781495315</p>
+          <p className="text-sm">📧 Educarebd4@gmail.com</p>
           <p className="text-sm">📍 Kobutorkhula, Sreenagor, Munshigonj</p>
         </div>
       </div>

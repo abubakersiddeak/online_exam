@@ -13,7 +13,7 @@ const AboutPage = () => {
         {/* হিরো সেকশন */}
         <section className="text-center mb-10 pt-13">
           <h1 className="text-3xl sm:text-4xl font-bold mb-3 text-blue-600 leading-tight">
-            এডুকেয়ার সেন্টারে স্বাগতম
+            এডুকেয়ার কোচিং সেন্টারে স্বাগতম
           </h1>
           <p className="text-base sm:text-lg text-gray-600 max-w-md mx-auto">
             "শিক্ষা, তবু শিক্ষা যদি শিকল না হয়, <br /> প্রাণে প্রাণে জ্বলে যাক

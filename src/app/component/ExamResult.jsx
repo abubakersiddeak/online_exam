@@ -73,7 +73,7 @@ export default function ExamResult() {
   };
 
   return (
-    <div className="p-4 max-w-5xl mx-auto">
+    <div className="p-4 max-w-5xl mx-auto ">
       <h2 className="text-3xl font-bold text-center mb-6">
         📋 শিক্ষার্থীদের তথ্য
       </h2>
@@ -122,7 +122,7 @@ export default function ExamResult() {
               </thead>
               <tbody>
                 {filteredStudents.map((s) => (
-                  <tr key={s._id} className="text-center hover:bg-gray-50">
+                  <tr key={s._id} className="text-center ">
                     <td
                       className="py-2 px-3 border text-blue-600 cursor-pointer"
                       onClick={(e) => showExamModal(e, s)}
@@ -161,7 +161,7 @@ export default function ExamResult() {
             onClick={() => setIsModalOpen(false)}
           >
             <motion.div
-              className="bg-white p-6 rounded-lg shadow-xl max-w-md w-full"
+              className=" p-6 rounded-lg shadow-xl max-w-md w-full"
               initial={{ scale: 0.8, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.8, opacity: 0 }}

@@ -67,7 +67,7 @@ const AboutPage = () => {
             ))}
           </div>
         </section>
-        ;{/* location */}
+        {/* location */}
         <section className="bg-white rounded-xl shadow-md p-5 sm:p-8 mb-10">
           <h2 className="text-xl sm:text-2xl font-semibold text-red-500 mb-4 text-center">
             আমাদের অবস্থান

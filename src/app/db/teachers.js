@@ -3,7 +3,7 @@ export const teacher = [
     name: "Mithil Hasan",
     description: " Our Science Teacher ",
     subject: "Bangla , Science",
-    image: "/how-to-be-teacher-malaysia-feature.png",
+    image: "/InShot_20250425_001408807 (1).png",
   },
   {
     name: "Mithil Hasan",

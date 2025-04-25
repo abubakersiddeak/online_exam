@@ -12,7 +12,7 @@ export default function HomePage() {
       <Navbar />
 
       {/* Hero Section */}
-      <section className="text-center py-20 px-4 sm:py-28 sm:px-6 bg-gradient-to-br from-cyan-100/20 to-violet-200/10 rounded-xl relative overflow-hidden">
+      <section className="text-center py-2 px-4 mt-10 pt-9 sm:px-6 bg-gradient-to-br from-cyan-100/20 to-violet-200/10 rounded-xl relative overflow-hidden">
         <h1 className="text-4xl sm:text-6xl font-extrabold mb-6 tracking-tight leading-tight text-transparent bg-clip-text bg-gradient-to-r from-indigo-500 via-pink-500 to-yellow-500 drop-shadow-xl">
           Educare Coaching Center
         </h1>
@@ -26,9 +26,9 @@ export default function HomePage() {
       </section>
 
       {/* About Section */}
-      <section className="text-center bg-opacity-60 rounded-xl mt-10">
+      <section className="text-center bg-opacity-60 rounded-xl mt-5">
         <h2 className="text-3xl sm:text-4xl font-bold mb-6 text-gray-900 drop-shadow-lg">
-          আমাদের শিক্ষকগণ
+          আমাদের শিক্ষকবৃন্দ
         </h2>
 
         <div className="flex gap-4 mt-10 overflow-x-auto flex-nowrap justify-around xl:justify-center px-2 ">
@@ -49,7 +49,7 @@ export default function HomePage() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
                   {t.name}
                 </h3>
-                <p className="text-gray-600 text-sm">{t.description}</p>
+                <p className="text-gray-600 text-sm">{t.subject}</p>
               </div>
             </div>
           ))}

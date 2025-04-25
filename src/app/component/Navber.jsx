@@ -20,10 +20,18 @@ export default function Navbar() {
           <li className="hover:text-blue-600 cursor-pointer text-green-600">
             <a href="/onlineExam">Online Exam</a>
           </li>
-          <li className="hover:text-blue-600 cursor-pointer">Home</li>
-          <li className="hover:text-blue-600 cursor-pointer">Courses</li>
-          <li className="hover:text-blue-600 cursor-pointer">About</li>
-          <li className="hover:text-blue-600 cursor-pointer">Contact</li>
+          <li className="hover:text-blue-600 cursor-pointer">
+            <a href="/">Home</a>
+          </li>
+          <li className="hover:text-blue-600 cursor-pointer">
+            <a href="/about">About Us</a>
+          </li>
+          <li className="hover:text-blue-600 cursor-pointer">
+            <a href="#"></a>
+          </li>
+          <li className="hover:text-blue-600 cursor-pointer">
+            <a href="#"></a>
+          </li>
         </ul>
 
         {/* Mobile Menu Button */}
@@ -44,15 +52,23 @@ export default function Navbar() {
           <li>
             <a
               href="/onlineExam"
-              className="hover:text-blue-600 cursor-pointer"
+              className="hover:text-blue-600 cursor-pointer text-green-600"
             >
               Online Exam
             </a>
           </li>
-          <li className="hover:text-blue-600 cursor-pointer">Home</li>
-          <li className="hover:text-blue-600 cursor-pointer">Courses</li>
-          <li className="hover:text-blue-600 cursor-pointer">About</li>
-          <li className="hover:text-blue-600 cursor-pointer">Contact</li>
+          <li className="hover:text-blue-600 cursor-pointer">
+            <a href="/">Home</a>
+          </li>
+          <li className="hover:text-blue-600 cursor-pointer">
+            <a href="/about">About Us</a>
+          </li>
+          <li className="hover:text-blue-600 cursor-pointer">
+            <a href="#"></a>
+          </li>
+          <li className="hover:text-blue-600 cursor-pointer">
+            <a href="#"></a>
+          </li>
         </ul>
       )}
     </nav>

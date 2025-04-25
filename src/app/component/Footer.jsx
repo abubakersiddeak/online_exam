@@ -24,23 +24,16 @@ export default function Footer() {
           <ul className="space-y-2 text-sm">
             <li>
               <a
-                href="#"
+                href="/"
                 className="hover:text-blue-600 transition-all duration-200"
               >
                 Home
               </a>
             </li>
+
             <li>
               <a
-                href="#"
-                className="hover:text-blue-600 transition-all duration-200"
-              >
-                Courses
-              </a>
-            </li>
-            <li>
-              <a
-                href="#"
+                href="/about"
                 className="hover:text-blue-600 transition-all duration-200"
               >
                 About
@@ -48,10 +41,10 @@ export default function Footer() {
             </li>
             <li>
               <a
-                href="#"
+                href="/onlineExam"
                 className="hover:text-blue-600 transition-all duration-200"
               >
-                Contact
+                Online Exam
               </a>
             </li>
           </ul>
@@ -95,14 +88,14 @@ export default function Footer() {
           <h3 className="text-lg font-semibold mb-4 text-gray-800">Contact</h3>
           <p className="text-sm">📞 +880 1234-567890</p>
           <p className="text-sm">📧 info@edunation.com</p>
-          <p className="text-sm">📍 Dhaka, Bangladesh</p>
+          <p className="text-sm">📍 Kobutorkhula, Sreenagor, Munshigonj</p>
         </div>
       </div>
 
       {/* Personal Info Section */}
-      <div className="bg-gray-800 text-white p-6 rounded-xl shadow-md mx-6 mt-8 mb-6 text-center transition-all duration-300 hover:scale-100 hover:shadow-lg">
+      <div className=" p-6 rounded-xl shadow-md mx-6 mt-8 mb-6 text-center transition-all duration-300 hover:scale-100 hover:shadow-lg">
         <p className="text-xl font-semibold mb-4">
-          Made with by{" "}
+          This application developed by{" "}
           <a
             href="https://effervescent-lokum-36bfa7.netlify.app/"
             className="text-blue-500 hover:text-blue-400 transition-all duration-300"

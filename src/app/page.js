@@ -49,7 +49,7 @@ export default function HomePage() {
                 <h3 className="text-xl font-semibold text-gray-900 mb-2">
                   {t.name}
                 </h3>
-                <p className="text-gray-600 text-sm">{t.subject}</p>
+                <p className="text-gray-600 text-sm">{t.qualification}</p>
               </div>
             </div>
           ))}

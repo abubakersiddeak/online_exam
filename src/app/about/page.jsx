@@ -2,6 +2,7 @@ import React from "react";
 import { teacher } from "../db/teachers";
 import Navbar from "../component/Navber";
 import Footer from "../component/Footer";
+import Image from "next/image";
 
 const teachers = teacher;
 
@@ -21,7 +22,6 @@ const AboutPage = () => {
             <br /> যেখানে মনের অন্ধকার ছিঁড়ে বেরিয়ে আসবে জীবন।"
           </p>
         </section>
-
         {/* আমাদের সম্পর্কে */}
         <section className="bg-white rounded-xl shadow-md p-5 sm:p-8 mb-8">
           <h2 className="text-xl sm:text-2xl font-semibold text-blue-500 mb-3 text-center">
@@ -38,8 +38,8 @@ const AboutPage = () => {
             সক্ষম।
           </p>
         </section>
-
         {/* শিক্ষক প্যানেল */}
+        import Image from "next/image";
         <section className="mb-10">
           <h2 className="text-xl sm:text-2xl font-semibold text-green-600 mb-5 text-center">
             আমাদের শিক্ষকবৃন্দ
@@ -50,10 +50,12 @@ const AboutPage = () => {
                 key={index}
                 className="bg-white p-4 rounded-xl shadow hover:shadow-md transition"
               >
-                <img
+                <Image
                   src={teacher.image}
                   alt={teacher.name}
-                  className="w-full h-48 object-cover rounded-md mb-4"
+                  width={300} // Set width
+                  height={300} // Set height
+                  className="w-full h-70 object-cover rounded-md mb-4"
                 />
                 <h3 className="text-lg font-bold text-blue-600">
                   {teacher.name}
@@ -61,13 +63,12 @@ const AboutPage = () => {
                 <p className="text-sm text-gray-500 mb-1">
                   {teacher.qualification}
                 </p>
-                <p className="text-gray-700 text-sm">{teacher.description}</p>
+                <p className="text-gray-700 text-sm">{teacher.subject}</p>
               </div>
             ))}
           </div>
         </section>
-
-        {/* location */}
+        ;{/* location */}
         <section className="bg-white rounded-xl shadow-md p-5 sm:p-8 mb-10">
           <h2 className="text-xl sm:text-2xl font-semibold text-red-500 mb-4 text-center">
             আমাদের অবস্থান

@@ -3,8 +3,10 @@ import { useState, useRef } from "react";
 import ExamResult from "../component/ExamResult";
 import Navbar from "../component/Navber";
 import Footer from "../component/Footer";
+import { useSession, signOut } from "next-auth/react";
 
 export default function PostExamForm() {
+  const { data: session, status } = useSession();
   const formRef = useRef(null);
   const [formData, setFormData] = useState({
     title: "",
@@ -13,6 +15,8 @@ export default function PostExamForm() {
     questions: [],
   });
   const [message, setMessage] = useState("");
+  if (status === "loading") return <p>লোড হচ্ছে...</p>;
+  if (!session) return <p> লগইন করেন নাই।</p>;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -91,6 +95,12 @@ export default function PostExamForm() {
   return (
     <div className="flex flex-col ">
       <Navbar />
+      <button
+        onClick={() => signOut({ callbackUrl: "/signin" })}
+        className="mt-15  bg-red-500 text-white px-4 py-2"
+      >
+        Logout
+      </button>
       {/* create exam */}
       <div className="max-w-4xl mx-auto mt-10 p-6  rounded-2xl shadow-lg space-y-6">
         <h2 className="text-3xl font-semibold mb-6 text-center text-blue-600">

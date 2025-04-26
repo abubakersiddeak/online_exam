@@ -27,7 +27,7 @@ export default function Navbar() {
             <a href="/about">About Us</a>
           </li>
           <li className="hover:text-blue-600 cursor-pointer">
-            <a href="#"></a>
+            <a href="/signin">Login</a>
           </li>
           <li className="hover:text-blue-600 cursor-pointer">
             <a href="#"></a>
@@ -64,7 +64,7 @@ export default function Navbar() {
             <a href="/about">About Us</a>
           </li>
           <li className="hover:text-blue-600 cursor-pointer">
-            <a href="#"></a>
+            <a href="/signin">Login</a>
           </li>
           <li className="hover:text-blue-600 cursor-pointer">
             <a href="#"></a>

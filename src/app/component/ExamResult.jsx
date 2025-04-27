@@ -163,7 +163,7 @@ export default function ExamResult() {
               exit={{ scale: 0.8 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="text-xl font-bold mb-4 text-center">
+              <h3 className="text-xl font-bold mb-4 text-center text-white">
                 📝 পরীক্ষার বিস্তারিত
               </h3>
               <p>

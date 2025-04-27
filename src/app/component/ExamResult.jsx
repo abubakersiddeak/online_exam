@@ -1,6 +1,6 @@
 "use client";
-import { useEffect, useState } from "react";
-import React from "react";
+
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function ExamResult() {
@@ -9,10 +9,9 @@ export default function ExamResult() {
   const [filterResult, setFilterResult] = useState("all");
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [examId, setExamId] = useState("");
   const [exam, setExam] = useState(null);
+  const [selectedStudent, setSelectedStudent] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedStudent, setSelectedStudent] = useState(null); //  নতুন স্টেট
 
   useEffect(() => {
     const fetchData = async () => {
@@ -29,29 +28,28 @@ export default function ExamResult() {
         setLoading(false);
       }
     };
+
     fetchData();
   }, []);
 
-  useEffect(() => {
-    const fetchExam = async () => {
-      if (!examId) return;
-      setLoading(true);
-      try {
-        const res = await fetch(
-          `${process.env.NEXT_PUBLIC_BASE_URL}/api/exams/${examId}`
-        );
-        if (!res.ok) throw new Error("পরীক্ষার তথ্য লোড করতে সমস্যা হয়েছে");
-        const data = await res.json();
-        setExam(data);
-        setIsModalOpen(true);
-      } catch (e) {
-        setError("পরীক্ষার তথ্য লোড করতে সমস্যা হয়েছে");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchExam();
-  }, [examId]);
+  const fetchExam = async (examId) => {
+    try {
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/api/exams/${examId}`
+      );
+      if (!res.ok) throw new Error("পরীক্ষার তথ্য লোড করতে সমস্যা হয়েছে");
+      const data = await res.json();
+      setExam(data);
+    } catch (err) {
+      setError("পরীক্ষার তথ্য লোড করতে সমস্যা হয়েছে");
+    }
+  };
+
+  const handleStudentClick = async (student) => {
+    setSelectedStudent(student);
+    await fetchExam(student.examId);
+    setIsModalOpen(true);
+  };
 
   const filteredStudents = students.filter((s) => {
     const matchName = s.name?.toLowerCase().includes(searchTerm.toLowerCase());
@@ -62,132 +60,132 @@ export default function ExamResult() {
 
   const isWithin7Days = (dateStr) => {
     const created = new Date(dateStr);
-    const now = new Date();
-    return now - created <= 7 * 24 * 60 * 60 * 1000;
-  };
-
-  const showExamModal = (e, s) => {
-    e.preventDefault();
-    setExamId(s.examId);
-    setSelectedStudent(s); //  শিক্ষার্থীর তথ্য রাখো
+    return new Date().getTime() - created.getTime() <= 7 * 24 * 60 * 60 * 1000;
   };
 
   return (
-    <div className="p-4 max-w-5xl mx-auto ">
-      <h2 className="text-3xl font-bold text-center mb-6">
-        📋 শিক্ষার্থীদের তথ্য
+    <div className="p-6 max-w-5xl mx-auto">
+      <h2 className="text-2xl font-bold mb-6 text-center">
+        📋 পরীক্ষার রেজাল্ট
       </h2>
 
-      {loading && <p className="text-center text-blue-500">লোড হচ্ছে...</p>}
-      {error && <p className="text-center text-red-500">{error}</p>}
+      {loading && <p className="text-center text-blue-600">লোড হচ্ছে...</p>}
+      {error && <p className="text-center text-red-600">{error}</p>}
 
       {!loading && !error && (
-        <>
-          {/* Search and Filter */}
-          <div className="flex flex-col sm:flex-row gap-4 justify-between mb-4">
+        <div>
+          <div className="mb-2 gap-2">
             <input
               type="text"
-              placeholder="🔍 নাম দিয়ে খুঁজুন"
+              placeholder="🔍 নাম খুঁজুন"
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="border px-4 py-2 rounded-md shadow-sm w-full sm:w-1/2"
+              className="border px-2 py-1 rounded w-full text-sm"
             />
             <select
-              className="border px-4 py-2 rounded-md shadow-sm w-full sm:w-1/3"
               value={filterResult}
               onChange={(e) => setFilterResult(e.target.value)}
+              className="border px-2 py-1 rounded w-full text-sm"
             >
-              <option value="all">সকল ফলাফল</option>
-              <option value="1">পাশ (১)</option>
-              <option value="0">ফেল (০)</option>
+              <option value="all">সব</option>
+              <option value="1">পাশ</option>
+              <option value="0">ফেল</option>
             </select>
           </div>
 
-          {/* Table */}
-          <div className="overflow-x-auto">
-            <motion.table
-              initial={{ opacity: 0, y: 20 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.5 }}
-              className="w-full border border-gray-300 shadow"
-            >
-              <thead className="bg-gray-100 text-gray-700">
+          <div className="overflow-x-auto ">
+            <table className="w-full table-auto border">
+              <thead className="bg-gray-100">
                 <tr>
-                  <th className="py-3 px-2 border">নাম</th>
-                  <th className="py-3 px-2 border">মোবাইল</th>
-                  <th className="py-3 px-2 border">প্রাপ্ত নম্বর </th>
-                  <th className="py-3 px-2 border">সময়</th>
-                  <th className="py-3 px-2 border">৭ দিনের মধ্যে?</th>
+                  <th className="p-1 border text-xs font-semibold text-gray-600">
+                    নাম
+                  </th>
+                  <th className="p-1 border text-xs font-semibold text-gray-600">
+                    মোবাইল
+                  </th>
+                  <th className="p-1 border text-xs font-semibold text-gray-600">
+                    ফল
+                  </th>
+                  <th className="p-1 border text-xs font-semibold text-gray-600">
+                    সময়
+                  </th>
+                  <th className="p-1 border text-xs font-semibold text-gray-600">
+                    ৭ দিন?
+                  </th>
                 </tr>
               </thead>
               <tbody>
-                {filteredStudents.map((s) => (
-                  <tr key={s._id} className="text-center ">
-                    <td
-                      className="py-2 px-3 border text-blue-600 cursor-pointer"
-                      onClick={(e) => showExamModal(e, s)}
-                    >
-                      {s.name}
+                {filteredStudents.map((student) => (
+                  <tr
+                    key={student._id}
+                    className="text-center cursor-pointer text-xs"
+                    onClick={() => handleStudentClick(student)}
+                  >
+                    <td className="p-1 border">
+                      {student.name.substring(0, 10)}...
                     </td>
-                    <td className="py-2 px-3 border">{s.phoneNumber}</td>
-                    <td className={`py-2 px-3 border font-semibold `}>
-                      {s.result}
+                    <td className="p-1 border">
+                      {student.phoneNumber.substring(0, 8)}...
                     </td>
-                    <td className="py-2 px-3 border">
-                      {new Date(s.createdAt).toLocaleString("bn-BD", {
-                        dateStyle: "short",
-                        timeStyle: "short",
-                      })}
+                    <td className="p-1 border">
+                      {student.result === "1" ? "হ্যাঁ" : "না"}
                     </td>
-                    <td className="py-2 px-3 border">
-                      {isWithin7Days(s.createdAt) ? " হ্যাঁ" : " না"}
+                    <td className="p-1 border">
+                      {new Date(student.createdAt)
+                        .toLocaleDateString("bn-BD")
+                        .substring(0, 8)}
+                    </td>
+                    <td className="p-1 border">
+                      {isWithin7Days(student.createdAt) ? "হ্যাঁ" : "না"}
                     </td>
                   </tr>
                 ))}
               </tbody>
-            </motion.table>
+            </table>
           </div>
-        </>
+        </div>
       )}
 
       {/* Modal */}
       <AnimatePresence>
-        {isModalOpen && exam && selectedStudent && (
+        {isModalOpen && selectedStudent && exam && (
           <motion.div
-            className="fixed inset-0 z-50 bg-black bg-opacity-50 flex items-center justify-center"
+            className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             onClick={() => setIsModalOpen(false)}
           >
             <motion.div
-              className=" p-6 rounded-lg shadow-xl max-w-md w-full"
-              initial={{ scale: 0.8, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.8, opacity: 0 }}
+              className=" p-6 rounded-lg w-80"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
               onClick={(e) => e.stopPropagation()}
             >
-              <h3 className="text-xl font-bold mb-4">📝 পরীক্ষার বিস্তারিত</h3>
+              <h3 className="text-xl font-bold mb-4 text-center">
+                📝 পরীক্ষার বিস্তারিত
+              </h3>
               <p>
-                <strong> শিক্ষার্থীর নাম:</strong> {selectedStudent.name}
+                <strong>নাম:</strong> {selectedStudent.name}
               </p>
               <p>
-                <strong>📞 মোবাইল:</strong> {selectedStudent.phoneNumber}
+                <strong>মোবাইল:</strong> {selectedStudent.phoneNumber}
               </p>
               <p>
-                <strong> পাপ্ত নম্বর :</strong> {selectedStudent.result}
+                <strong>ফলাফল:</strong> {selectedStudent.result}
               </p>
               <hr className="my-4" />
               <p>
-                <strong> পরীক্ষার নাম:</strong> {exam.title}
+                <strong>পরীক্ষার নাম:</strong> {exam.title}
               </p>
               <p>
-                <strong> সময়সীমা:</strong> {exam.duration} মিনিট
+                <strong>সময়সীমা:</strong> {exam.duration} মিনিট
               </p>
 
               <button
+                className="mt-6 w-full bg-red-500 hover:bg-red-600  py-2 rounded"
                 onClick={() => setIsModalOpen(false)}
-                className="mt-6 px-4 py-2 bg-red-500 text-white rounded hover:bg-red-600"
               >
                 বন্ধ করুন
               </button>

@@ -7,7 +7,7 @@ import { connectMongodb } from "@/app/lib/mongodb";
 export async function GET(request, { params }) {
   try {
     await connectMongodb();
-    const { id } = params;
+    const { id } = await params;
 
     const exam = await Exam.findById(id);
 

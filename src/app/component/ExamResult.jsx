@@ -104,7 +104,7 @@ export default function ExamResult() {
                     মোবাইল
                   </th>
                   <th className="p-1 border text-xs font-semibold text-gray-600">
-                    ফল
+                    স্কোর
                   </th>
                   <th className="p-1 border text-xs font-semibold text-gray-600">
                     সময়
@@ -127,9 +127,7 @@ export default function ExamResult() {
                     <td className="p-1 border">
                       {student.phoneNumber.substring(0, 8)}...
                     </td>
-                    <td className="p-1 border">
-                      {student.result === "1" ? "হ্যাঁ" : "না"}
-                    </td>
+                    <td className="p-1 border">{student.result}</td>
                     <td className="p-1 border">
                       {new Date(student.createdAt)
                         .toLocaleDateString("bn-BD")

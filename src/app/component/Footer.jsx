@@ -97,7 +97,7 @@ export default function Footer() {
         <p className="text-xl font-semibold mb-4">
           This application developed by{" "}
           <a
-            href="https://effervescent-lokum-36bfa7.netlify.app/"
+            href="https://new-protfolio-one.vercel.app/"
             className="text-blue-500 hover:text-blue-400 transition-all duration-300"
           >
             Abubakar Siddik Zisan

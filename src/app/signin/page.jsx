@@ -33,7 +33,7 @@ export default function SignInPage() {
       if (role === "admin") {
         router.push("/admian_d_board");
       } else {
-        router.push("/");
+        router.push("/signin");
       }
     } catch (error) {
       console.log("error from handleLogin:", error.message);

@@ -104,7 +104,7 @@ export default function Footer() {
           </a>
         </p>
         <a
-          href="https://effervescent-lokum-36bfa7.netlify.app/"
+          href="https://new-protfolio-one.vercel.app/"
           className="text-lg text-blue-500 font-semibold hover:text-blue-400 hover:underline transition-all duration-300"
         >
           Visit My Portfolio
